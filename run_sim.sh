@@ -24,16 +24,16 @@ echo " Alt+Tab to find it if behind other windows."
 echo "=============================================="
 
 if [ -f /mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws/turbo_sim.so ]; then
-    LD_PRELOAD=/mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws/turbo_sim.so LD_LIBRARY_PATH=./lib ./task_1b_launch
+    LD_PRELOAD=/mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws/turbo_sim.so LD_LIBRARY_PATH=./lib ./task_1b_launch "$@"
     STATUS=$?
 else
-    LD_LIBRARY_PATH=./lib ./task_1b_launch
+    LD_LIBRARY_PATH=./lib ./task_1b_launch "$@"
     STATUS=$?
 fi
 
 if [ $STATUS -ne 0 ]; then
     echo "Launcher exited with status $STATUS. Retrying in safe mode..."
-    LD_LIBRARY_PATH=./lib ./task_1b_launch
+    LD_LIBRARY_PATH=./lib ./task_1b_launch "$@"
 fi
 
 echo "Simulator session ended."

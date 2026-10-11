@@ -14,7 +14,7 @@ start "T1-MQTT-Broker" cmd /k wsl -d Ubuntu-22.04 -u root -- mosquitto -v
 timeout /t 3 /nobreak >nul
 
 echo [2/3] Starting MuJoCo Simulator (wait 4 seconds)...
-start "T2-MuJoCo-Sim" cmd /k wsl -d Ubuntu-22.04 -u root -- bash /mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws/run_sim.sh
+start "T2-MuJoCo-Sim" cmd /k wsl -d Ubuntu-22.04 -u root -- bash /mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws/run_sim.sh --evaluate
 timeout /t 4 /nobreak >nul
 
 echo [3/3] Starting Navigation AI...
