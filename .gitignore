@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+*.bak
+.venv/
+venv/
+.env
+probe_log.txt
+run1_log.txt
+result.json
