@@ -214,42 +214,78 @@ The simulator window may open separately. Use Alt+Tab to find it if it is not vi
 
 **Configuration note:** The current launcher contains machine-specific paths, including the Windows project directory and WSL distribution name. Update these for your own computer before using the script.
 
-### Option B: Start the components manually
+## 🚀 How to Run the Project Manually (as per E Yantra Requirements)
 
-Open three Ubuntu terminals.
+Follow these steps in order. You need **three Ubuntu terminals**.
 
-**Terminal 1 — MQTT broker**
+### Step 1: Open Ubuntu 3 Times
+
+1. Press the Windows key.
+2. Search for **Ubuntu** and open it.
+3. Repeat until you have 3 Ubuntu windows open.
+
+### Step 2: Terminal 1 — Start MQTT
+
+Copy and paste:
 
 ```bash
-sudo service mosquitto start
-sudo service mosquitto status
+mosquitto -v
 ```
 
-If the broker is already running, do not start a second instance on the same port.
+Keep this terminal open.
 
-**Terminal 2 — Simulator**
+### Step 3: Terminal 2 — Start the Simulator
 
-Navigate to the project directory, then launch the simulator using the supplied script:
+Wait 3 seconds after starting MQTT.
+
+Copy and paste these commands one by one:
 
 ```bash
-cd /path/to/PacBot-Task1B
-bash run_sim.sh
+cd /mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws
 ```
 
-Replace `/path/to/PacBot-Task1B` with the actual path.
-
-**Terminal 3 — Navigation controller**
-
-Navigate to the same project directory and run:
+```bash
+export DISPLAY=:0 WAYLAND_DISPLAY=wayland-0 XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir vblank_mode=0
+```
 
 ```bash
-cd /path/to/PacBot-Task1B
+LD_PRELOAD=./turbo_sim.so LD_LIBRARY_PATH=./lib ./task_1b_launch
+```
+
+The 3D maze should appear. Keep this terminal open.
+
+### Step 4: Terminal 3 — Control the Robot
+
+Choose **one** option.
+
+**Option A: Automatic maze solving**
+
+```bash
+cd /mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws
 python3 task_1b.py
 ```
 
-Start the broker and simulator before the controller.
+**Option B: Drive using keyboard**
 
-To stop the controller, press `Ctrl+C` in its terminal. Stop the simulator and broker using their respective terminal or service controls.
+```bash
+cd /mnt/c/Users/Administrator/Downloads/task_1b/pacbot_ws
+python3 teleop_keys.py
+```
+
+Keyboard controls:
+
+| Key       | Action  |
+| --------- | ------- |
+| `W` / `↑` | Forward |
+| `S` / `↓` | Reverse |
+| `A` / `←` | Left    |
+| `D` / `→` | Right   |
+| `Space`   | Stop    |
+| `Q`       | Quit    |
+
+**Important:** Run only one option at a time. To switch, press `Ctrl + C` in the current controller terminal, then start the other option.
+
+**Note:** These commands use the original developer's folder path. If you clone this project into another location, replace the path with your own project folder.
 
 ## Manual Control and Debugging
 
@@ -275,7 +311,7 @@ The example above sends a stop command. Use manual commands only when you intend
 
 ## Troubleshooting
 
-### MQTT connection fails
+### If the MQTT connection fails
 
 Check the broker:
 
@@ -291,22 +327,22 @@ sudo service mosquitto start
 
 Confirm that the controller uses `localhost`, port `1883`, and the correct MQTT topics.
 
-### Port 1883 is already in use
+### If Port 1883 is already in use
 
 This often means another Mosquitto instance is running. Check the existing service and avoid launching a duplicate broker.
 
-### MuJoCo window does not appear
+### If the MuJoCo window does not appear
 
 - Check whether the simulator process is still running.
 - Check the WSL graphical display configuration.
 - Inspect the output from `run_sim.sh`.
 - Confirm that the required shared libraries are available.
 
-### Python cannot import Paho MQTT
+### If Python cannot import Paho MQTT
 
 Install the dependencies using the instructions above, preferably in the same Python environment used to launch `task_1b.py`.
 
-### The robot does not solve the maze
+### If the robot does not solve the maze
 
 - Confirm that the sensor messages are arriving.
 - Check the sensor mapping and controller state transitions.
